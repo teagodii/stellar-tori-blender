@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Extension build output (blender --command extension build)
+dist/
+*.zip
+
+# Blender autosave / backup copies
+*.blend1
+*.blend2
+
+# macOS
+.DS_Store
