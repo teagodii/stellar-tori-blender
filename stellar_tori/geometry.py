@@ -33,7 +33,7 @@ PLANE_SUBDIVISIONS = 1
 MIN_SEGMENTS = 3
 
 
-def _segments(value, name):
+def segment_count(value, name):
     count = int(value)
     if count != value or count < MIN_SEGMENTS:
         raise ValueError(f"{name} must be a whole number >= {MIN_SEGMENTS}, got {value!r}")
@@ -42,8 +42,8 @@ def _segments(value, name):
 
 def torus_vertices(major_radius, minor_radius, major_segments, minor_segments):
     """Torus lattice points, index ``i * minor_segments + j``."""
-    n_theta = _segments(major_segments, "major_segments")
-    n_phi = _segments(minor_segments, "minor_segments")
+    n_theta = segment_count(major_segments, "major_segments")
+    n_phi = segment_count(minor_segments, "minor_segments")
     verts = []
     for i in range(n_theta):
         theta = (i / n_theta) * math.pi * 2
@@ -58,8 +58,8 @@ def torus_vertices(major_radius, minor_radius, major_segments, minor_segments):
 
 def torus_faces(major_segments, minor_segments):
     """Quads wrapping both ways. Winding follows theta then phi, so normals face outward."""
-    n_theta = _segments(major_segments, "major_segments")
-    n_phi = _segments(minor_segments, "minor_segments")
+    n_theta = segment_count(major_segments, "major_segments")
+    n_phi = segment_count(minor_segments, "minor_segments")
     faces = []
     for i in range(n_theta):
         i_next = (i + 1) % n_theta
@@ -74,7 +74,7 @@ def torus_faces(major_segments, minor_segments):
     return faces
 
 
-def _subdivisions(value):
+def subdivision_count(value):
     count = int(value)
     if count != value or count < 1:
         raise ValueError(f"subdivisions must be a whole number >= 1, got {value!r}")
@@ -83,7 +83,7 @@ def _subdivisions(value):
 
 def plane_vertices(size, subdivisions):
     """Plane grid corners, index ``i * (n + 1) + j`` with x from i and y from j."""
-    n = _subdivisions(subdivisions)
+    n = subdivision_count(subdivisions)
     s = size
     verts = []
     for i in range(n + 1):
@@ -96,7 +96,7 @@ def plane_vertices(size, subdivisions):
 
 def plane_faces(subdivisions):
     """n x n quads, counter-clockwise seen from +Z, so normals face +Z."""
-    n = _subdivisions(subdivisions)
+    n = subdivision_count(subdivisions)
     row = n + 1
     return [
         (i * row + j, (i + 1) * row + j, (i + 1) * row + j + 1, i * row + j + 1)

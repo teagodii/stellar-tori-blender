@@ -2,7 +2,9 @@
 """Build a Stellar Tori configuration as Blender objects from plain parameters.
 
 ``build(params)`` doesn't depend on operators, UI context or ``bpy.ops``, so the
-"Add Stellar Tori" operator and a later live-regenerate path can share it.
+"Add Stellar Tori" operator and live regeneration (``live.py``) share it.
+``build_parts`` makes just the tori under an existing root, which is how live
+regeneration rebuilds a figure in place.
 
 Result, for the default 9Vt + 18Wt + 18Mt:
 
@@ -20,6 +22,9 @@ viewer's default view becoming Blender's Front view. Organize modes:
 - ``JOINED``: one mesh object per family (named by its layer). Each torus's
   transform is baked into the vertices in double precision.
 
+An empty selection is allowed: it makes the collection and root, named "Stellar
+Tori", with no tori under them.
+
 Names are deterministic. Blender adds ".001"-style suffixes only when a name is
 already taken.
 """
@@ -36,6 +41,7 @@ FAMILIES = ("Vt", "Wt", "Mt")
 FAMILY_OPTIONS = {"Vt": td.VT_OPTIONS, "Wt": td.WT_OPTIONS, "Mt": td.MT_OPTIONS}
 GEOMETRY_TYPES = ("TORI", "PLANES")
 ORGANIZE_MODES = ("OBJECTS", "GROUPED", "JOINED")
+EMPTY_NAME = "Stellar Tori"  # the name of a figure with nothing selected
 
 # +90° about X takes the viewer's +Y (up) to Blender's +Z.
 APP_VIEW_ROTATION = (math.cos(math.pi / 4), math.sin(math.pi / 4), 0.0, 0.0)
@@ -94,15 +100,16 @@ def selection(params):
         if layer not in FAMILY_OPTIONS[family]:
             raise ValueError(f"{family} must be one of {FAMILY_OPTIONS[family]} or None, got {layer!r}")
         chosen.append((family, layer, td.LAYERS[layer]))
-    if not chosen:
-        raise ValueError("the selection is empty: choose at least one of Vt, Wt, Mt")
     return chosen
 
 
 def configuration_name(params):
-    """'<formal name> (<layers>)', for example 'Tri-tori (3Vt)'."""
-    layers = [layer for _, layer, _ in selection(params)]
-    count = sum(len(indices) for _, _, indices in selection(params))
+    """'<formal name> (<layers>)', for example 'Tri-tori (3Vt)', or EMPTY_NAME with nothing selected."""
+    chosen = selection(params)
+    if not chosen:
+        return EMPTY_NAME
+    layers = [layer for _, layer, _ in chosen]
+    count = sum(len(indices) for _, _, indices in chosen)
     return f"{td.FORMAL_NAMES[count]} ({' + '.join(layers)})"
 
 
@@ -129,12 +136,18 @@ def rotate(q, v):
     )
 
 
-def _validate(params):
+def validate(params):
+    """Raise ValueError for params that can't be built, before anything is created."""
     if params.geometry_type not in GEOMETRY_TYPES:
         raise ValueError(f"geometry_type must be one of {GEOMETRY_TYPES}, got {params.geometry_type!r}")
     if params.organize not in ORGANIZE_MODES:
         raise ValueError(f"organize must be one of {ORGANIZE_MODES}, got {params.organize!r}")
     selection(params)
+    if params.geometry_type == "TORI":
+        geometry.segment_count(params.major_segments, "major_segments")
+        geometry.segment_count(params.minor_segments, "minor_segments")
+    else:
+        geometry.subdivision_count(params.plane_subdivisions)
 
 
 def _local_lattice(params):
@@ -153,10 +166,9 @@ def _local_lattice(params):
 def build(params=None, collection=None):
     """Create the configuration under ``collection`` (default: the scene's master collection)."""
     params = params or Params()
-    _validate(params)
+    validate(params)
     target = collection if collection is not None else bpy.context.scene.collection
     name = configuration_name(params)
-    offsets = params.offsets()
 
     config = bpy.data.collections.new(name)
     target.children.link(config)
@@ -167,12 +179,18 @@ def build(params=None, collection=None):
     root.rotation_quaternion = APP_VIEW_ROTATION if params.match_app_view else IDENTITY_ROTATION
     config.objects.link(root)
 
-    result = BuildResult(collection=config, root=root)
+    return BuildResult(collection=config, root=root, objects=build_parts(params, config, root))
+
+
+def build_parts(params, collection, root):
+    """Create the tori (or planes, or family meshes) in ``collection``, parented to ``root``.
+
+    Returns them in build order. ``params`` must already pass ``validate``. The
+    root's own transform is left alone.
+    """
     if params.organize == "JOINED":
-        _build_joined(params, offsets, config, root, result)
-    else:
-        _build_objects(params, offsets, config, root, result)
-    return result
+        return _build_joined(params, params.offsets(), collection, root)
+    return _build_objects(params, params.offsets(), collection, root)
 
 
 def _shared_mesh(params):
@@ -183,9 +201,13 @@ def _shared_mesh(params):
     return geometry.new_plane_mesh("Stellar Plane", params.plane_size, params.plane_subdivisions)
 
 
-def _build_objects(params, offsets, config, root, result):
+def _build_objects(params, offsets, config, root):
+    chosen = selection(params)
+    if not chosen:
+        return []
     mesh = _shared_mesh(params)
-    for _family, layer, indices in selection(params):
+    objects = []
+    for _family, layer, indices in chosen:
         if params.organize == "GROUPED":
             home = bpy.data.collections.new(layer)
             config.children.link(home)
@@ -198,13 +220,18 @@ def _build_objects(params, offsets, config, root, result):
             ob.rotation_quaternion = torus_rotation(index)
             ob.parent = root
             home.objects.link(ob)
-            result.objects.append(ob)
+            objects.append(ob)
+    return objects
 
 
-def _build_joined(params, offsets, config, root, result):
+def _build_joined(params, offsets, config, root):
+    chosen = selection(params)
+    if not chosen:
+        return []
     local_verts, local_faces = _local_lattice(params)
     stride = len(local_verts)
-    for _family, layer, indices in selection(params):
+    objects = []
+    for _family, layer, indices in chosen:
         verts, faces = [], []
         for k, index in enumerate(indices):
             q = torus_rotation(index)
@@ -222,4 +249,5 @@ def _build_joined(params, offsets, config, root, result):
         ob.rotation_mode = "QUATERNION"
         ob.parent = root
         config.objects.link(ob)
-        result.objects.append(ob)
+        objects.append(ob)
+    return objects
