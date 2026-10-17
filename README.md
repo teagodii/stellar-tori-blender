@@ -6,7 +6,8 @@ A Blender extension that generates **Stellar-Tori**: 45 symmetrically placed tor
 
 ## Install
 
-1. In Blender, open **Edit > Preferences > Add-ons**, click the **⌄** menu at the top right, choose **Install from Disk…** and pick `dist/stellar_tori-<version>.zip`.
+1. Download `stellar_tori-<version>.zip` from the [Releases](https://github.com/teagodii/stellar-tori-blender/releases) page (not the "Source code" archives).
+2. In Blender, open **Edit > Preferences > Add-ons**, click the **⌄** menu at the top right, choose **Install from Disk…** and pick that `.zip`.
 
 Pick the **.zip** itself, not the unzipped folder.
 
