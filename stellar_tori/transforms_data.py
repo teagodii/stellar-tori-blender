@@ -4,7 +4,7 @@
 # Generated from the Stellar-Tori app at commit e86a9fb894519b6e72636626f2465aaac6297146 (2026-10-16).
 # Regenerate it from the app instead of editing it by hand.
 
-"""Canonical Stellar Tori transform data: 45 tori, 9 rotations, 63 configurations.
+"""Canonical Stellar-Tori transform data: 45 tori, 9 rotations, 63 configurations.
 
 Positions are stored as signed references to four offset constants, so the
 constants can be exposed as settings; the defaults below reproduce the canonical

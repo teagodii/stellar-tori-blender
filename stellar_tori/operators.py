@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-"""Operators: "Add Stellar Tori" (build.Params as properties, with a redo panel) and "Detach"."""
+"""Operators: "Add Stellar-Tori" (build.Params as properties, with a redo panel) and "Detach"."""
 
 import bpy
 
@@ -9,10 +9,10 @@ from . import settings
 
 
 class MESH_OT_stellar_tori_add(bpy.types.Operator):
-    """Add a Stellar Tori configuration: one object per torus at its canonical transform"""
+    """Add a Stellar-Tori configuration: one object per torus at its canonical transform"""
 
     bl_idname = "mesh.stellar_tori_add"
-    bl_label = "Stellar Tori"
+    bl_label = "Stellar-Tori"
     bl_options = {"REGISTER", "UNDO"}
 
     __annotations__ = settings.properties()
@@ -46,7 +46,7 @@ class MESH_OT_stellar_tori_add(bpy.types.Operator):
 
 
 class OBJECT_OT_stellar_tori_detach(bpy.types.Operator):
-    """Make the active Stellar Tori figure plain objects. Its settings are dropped, so it no longer regenerates"""
+    """Make the active Stellar-Tori figure plain objects. Its settings are dropped, so it no longer regenerates"""
 
     bl_idname = "object.stellar_tori_detach"
     bl_label = "Detach"

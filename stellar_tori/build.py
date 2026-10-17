@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-"""Build a Stellar Tori configuration as Blender objects from plain parameters.
+"""Build a Stellar-Tori configuration as Blender objects from plain parameters.
 
 ``build(params)`` doesn't depend on operators, UI context or ``bpy.ops``, so the
-"Add Stellar Tori" operator and live regeneration (``live.py``) share it.
+"Add Stellar-Tori" operator and live regeneration (``live.py``) share it.
 ``build_parts`` makes just the tori under an existing root, which is how live
 regeneration rebuilds a figure in place.
 
@@ -41,7 +41,7 @@ FAMILIES = ("Vt", "Wt", "Mt")
 FAMILY_OPTIONS = {"Vt": td.VT_OPTIONS, "Wt": td.WT_OPTIONS, "Mt": td.MT_OPTIONS}
 GEOMETRY_TYPES = ("TORI", "PLANES")
 ORGANIZE_MODES = ("OBJECTS", "GROUPED", "JOINED")
-EMPTY_NAME = "Stellar Tori"  # the name of a figure with nothing selected
+EMPTY_NAME = "Stellar-Tori"  # the name of a figure with nothing selected
 
 # +90° about X takes the viewer's +Y (up) to Blender's +Z.
 APP_VIEW_ROTATION = (math.cos(math.pi / 4), math.sin(math.pi / 4), 0.0, 0.0)

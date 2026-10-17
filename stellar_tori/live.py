@@ -38,7 +38,7 @@ def _on_update(self, context):
     try:
         regenerate(self.id_data, context.view_layer)
     except ValueError as exc:  # the figure is left as it was
-        print(f"Stellar Tori: can't regenerate {self.id_data.name!r}: {exc}")
+        print(f"Stellar-Tori: can't regenerate {self.id_data.name!r}: {exc}")
 
 
 class StellarToriSettings(bpy.types.PropertyGroup):

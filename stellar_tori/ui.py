@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-"""UI: Add > Mesh > Stellar Tori, and the "Stellar Tori" tab in the 3D viewport's sidebar (N)."""
+"""UI: Add > Mesh > Stellar-Tori, and the "Stellar-Tori" tab in the 3D viewport's sidebar (N)."""
 
 import bpy
 
@@ -10,7 +10,7 @@ from .operators import MESH_OT_stellar_tori_add, OBJECT_OT_stellar_tori_detach
 
 def menu_func(self, _context):
     self.layout.separator()
-    self.layout.operator(MESH_OT_stellar_tori_add.bl_idname, text="Stellar Tori", icon="MESH_TORUS")
+    self.layout.operator(MESH_OT_stellar_tori_add.bl_idname, text="Stellar-Tori", icon="MESH_TORUS")
 
 
 class VIEW3D_PT_stellar_tori(bpy.types.Panel):
@@ -18,14 +18,14 @@ class VIEW3D_PT_stellar_tori(bpy.types.Panel):
 
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
-    bl_category = "Stellar Tori"
-    bl_label = "Stellar Tori"
+    bl_category = "Stellar-Tori"
+    bl_label = "Stellar-Tori"
 
     def draw(self, context):
         layout = self.layout
         root = live.figure_root(context.active_object)
         if root is None:
-            layout.operator(MESH_OT_stellar_tori_add.bl_idname, text="Add Stellar Tori", icon="MESH_TORUS")
+            layout.operator(MESH_OT_stellar_tori_add.bl_idname, text="Add Stellar-Tori", icon="MESH_TORUS")
             layout.label(text="Select a figure to edit it here")
             return
 

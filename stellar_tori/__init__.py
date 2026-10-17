@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-"""Stellar Tori: generate the 45 Stellar Tori and their 63 configurations as meshes.
+"""Stellar-Tori: generate the 45 Stellar-Tori and their 63 configurations as meshes.
 
-Adds Add > Mesh > Stellar Tori: pick a configuration from the Vt / Wt / Mt
+Adds Add > Mesh > Stellar-Tori: pick a configuration from the Vt / Wt / Mt
 grid and adjust it in the redo panel. The figure keeps its settings, so the
-"Stellar Tori" tab in the sidebar (N) can change them at any time; Detach
+"Stellar-Tori" tab in the sidebar (N) can change them at any time; Detach
 turns it into plain objects.
 """
 

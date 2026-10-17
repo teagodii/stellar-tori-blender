@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-"""Torus and plane mesh builders on the canonical Stellar Tori lattice.
+"""Torus and plane mesh builders on the canonical Stellar-Tori lattice.
 
 Vertices sit exactly on the web viewer's wireframe lattice. The angles, the
 expression order and the vertex order (theta outer, phi inner; plane x outer,
