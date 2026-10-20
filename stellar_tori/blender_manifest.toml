@@ -1,10 +1,10 @@
 schema_version = "1.0.0"
 
-id = "stellar_tori"
+id = "stellar_tori_blender"
 version = "0.1.0"
-name = "Stellar-Tori"
-tagline = "Generate the 45 Stellar-Tori and their 63 configurations"
-maintainer = "teagodii"
+name = "Stellar-Tori Blender"
+tagline = "Blender add-on for the assembly of Stellar-Tori"
+maintainer = "Sig-Ennea LLC"
 type = "add-on"
 
 website = "https://github.com/teagodii/stellar-tori-blender"
@@ -14,4 +14,7 @@ blender_version_min = "4.2.0"
 
 license = [
   "SPDX:GPL-3.0-or-later",
+]
+copyright = [
+  "2026 Sig-Ennea LLC",
 ]

@@ -1,6 +1,6 @@
 # Stellar-Tori Blender
 
-This is a Blender Add-on for the assembly of **Stellar-Tori**: 45 symmetrically positioned tori/planes that combine into 63 configurations. For more information, check out the interactive web viewer at [StellarTori.com](https://stellartori.com)
+This Blender add-on is for the assembly of **Stellar-Tori**: 45 symmetrically positioned tori/planes that combine into 63 configurations. For more information, check out the interactive web viewer at [StellarTori.com](https://stellartori.com)
 
 > **Status: v0.1.0.** Principal assembly established: canonical positions and rotations with configurable dimensions and positions that remain editable until detached.
 
@@ -12,8 +12,8 @@ This is a Blender Add-on for the assembly of **Stellar-Tori**: 45 symmetrically 
 
 ## Install
 
-1. Download `stellar-tori-blender.zip` from the [Releases](https://github.com/teagodii/stellar-tori-blender/releases) page (not the "Source code" archives).
-2. In Blender, open Edit > Preferences > Add-ons > Install from Disk… > select `stellar-tori-blender.zip`. Requires Blender 4.2 or newer.
+1. Download `stellar_tori_blender.zip` from the [Releases](https://github.com/teagodii/stellar-tori-blender/releases) page (not the "Source code" archives).
+2. In Blender, open Edit > Preferences > Add-ons > Install from Disk… > select `stellar_tori_blender.zip`. Requires Blender 4.2 or newer.
 
 ## Requirements
 
